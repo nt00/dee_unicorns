@@ -13,11 +13,13 @@ public class Logins : MonoBehaviour
     public string username = "username";
     public string password = "password";
     public string email = "email";
+    public string code = "code";
+    public string confirmPassword = "confirmpasword";
 
-    public InputField usernameInput, passwordInput, emailInput, loginUsernameInput, loginPasswordInput, forgotEmailInput;
+    public InputField usernameInput, passwordInput, emailInput, loginUsernameInput, loginPasswordInput, forgotEmailInput, pwResetInput, newPasswordInput, confirmPasswordInput;
 
-    public bool showLogin, showCreateAcc, showForgotPw;
-    public GameObject login, createAcc, forgotPw;
+    public bool showLogin, showCreateAcc, showForgotPw, showPwReset, showNewPassword;
+    public GameObject login, createAcc, forgotPw, pwReset, newPasswordScreen;
 
     void Start()
     {
@@ -26,51 +28,130 @@ public class Logins : MonoBehaviour
 
     void Update()
     {
-        if (usernameInput.text != username)
+        if(showLogin)
         {
-            username = usernameInput.text;
+            if (loginUsernameInput.text != username)
+            {
+                username = loginUsernameInput.text;
+            }
+            if (loginPasswordInput.text != password)
+            {
+                password = loginPasswordInput.text;
+            }
+          
         }
-        if (passwordInput.text != password)
+        if(showCreateAcc)
         {
-            password = passwordInput.text;
+            if (usernameInput.text != username)
+            {
+                username = usernameInput.text;
+            }
+            if (passwordInput.text != password)
+            {
+                password = passwordInput.text;
+            }
+            if (emailInput.text != email)
+            {
+                email = emailInput.text;
+            }
         }
-        if (emailInput.text != email)
+        if(showForgotPw)
         {
-            email = emailInput.text;
+            if (forgotEmailInput.text != email)
+            {
+                email = forgotEmailInput.text;
+            }
         }
-        if(loginUsernameInput.text != username)
+        if(showPwReset)
         {
-            username = loginUsernameInput.text;
+            if(pwResetInput.text != code)
+            {
+                code = pwResetInput.text;
+            }
         }
-        if (loginPasswordInput.text != password)
+       if(showNewPassword)
         {
-            password = loginPasswordInput.text;
+            if(newPasswordInput.text != password)
+            {
+                password = newPasswordInput.text;
+            }
+            if(confirmPasswordInput.text != confirmPassword)
+            {
+                confirmPassword = confirmPasswordInput.text;
+            }
         }
-        if (forgotEmailInput.text != email)
-        {
-            email = emailInput.text;
-        }
+       
     }
 
     public void ShowCreateAcc()
     {
+        showCreateAcc = true;
+        showForgotPw = false;
+        showLogin = false;
+        showPwReset = false;
+        showNewPassword = false;
         createAcc.SetActive(true);
         forgotPw.SetActive(false);
         login.SetActive(false);
+        pwReset.SetActive(false);
+        newPasswordScreen.SetActive(false);
     }
 
     public void ShowLogin()
     {
+        showLogin = true;
+        showCreateAcc = false;
+        showForgotPw = false;
+        showPwReset = false;
+        showNewPassword = false;
         login.SetActive(true);
         forgotPw.SetActive(false);
         createAcc.SetActive(false);
+        pwReset.SetActive(false);
+        newPasswordScreen.SetActive(false);
     }
 
     public void ShowForgotPw()
     {
+        showForgotPw = true;
+        showLogin = false;
+        showCreateAcc = false;
+        showPwReset = false;
+        showNewPassword = false;
         forgotPw.SetActive(true);
+        pwReset.SetActive(false);
+        newPasswordScreen.SetActive(false);
         login.SetActive(false);
         createAcc.SetActive(false);
+    }
+
+    public void ShowPwReset()
+    {
+        showPwReset = true;
+        showForgotPw = false;
+        showLogin = false;
+        showCreateAcc = false;
+        showNewPassword = false;
+        pwReset.SetActive(true);
+        newPasswordScreen.SetActive(false);
+        forgotPw.SetActive(false);
+        login.SetActive(false);
+        createAcc.SetActive(false);
+    }
+
+    public void ShowNewPassword()
+    {
+        showNewPassword = true;
+        showPwReset = false;
+        showForgotPw = false;
+        showLogin = false;
+        showCreateAcc = false;
+        newPasswordScreen.SetActive(true);
+        pwReset.SetActive(false);
+        forgotPw.SetActive(false);
+        login.SetActive(false);
+        createAcc.SetActive(false);
+
     }
 
     public void CreateAccountButton()
@@ -80,6 +161,16 @@ public class Logins : MonoBehaviour
     public void LoginButton()
     {
         StartCoroutine(LoginToDB(username, password));
+    }
+
+    public void GetUserButton()
+    {
+        StartCoroutine(GetUser(email));
+    }
+
+    public void ChangePasswordButton()
+    {
+        StartCoroutine(UpdatePassword(email, password));
     }
     IEnumerator CreateUser(string userName, string passWord, string eMail)
     {
@@ -113,7 +204,22 @@ public class Logins : MonoBehaviour
         }
 
     }
-
+    IEnumerator GetUser(string email)
+    {
+        string getUserName = "localhost/unicorns_dee/CheckUser.php";
+        WWWForm getUserForm = new WWWForm();
+        getUserForm.AddField("emailPost",email);
+        WWW www = new WWW(getUserName, getUserForm);
+        yield return www;
+        Debug.Log(www.text);
+        if(www.text != "No User")
+        {
+            username = www.text;
+            SendEmail();
+            //Invoke("SendEmail", 0);
+        }
+    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     public void SendEmail()
     {
         MailMessage mail = new MailMessage();
@@ -121,7 +227,7 @@ public class Logins : MonoBehaviour
         mail.From = new MailAddress("sqlunityclasssydney@gmail.com");
         mail.To.Add(email);
         mail.Subject = "Password Reset";
-        mail.Body = "Hello User \n\nYou done did fucked \nReset password here... :)";
+        mail.Body = "Hello " + username + "\n\nYou done did fucked \nReset password here... :)";
 
         SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
         smtpServer.Port = 25;
@@ -131,5 +237,24 @@ public class Logins : MonoBehaviour
         smtpServer.Send(mail);
 
         Debug.Log("Success");
+    }
+
+    IEnumerator UpdatePassword(string eMail, string passWord)
+    {
+        string PasswordURL = "localhost/unicorns_dee/UpdatePassword.php";
+        WWWForm passwordForm = new WWWForm();
+        passwordForm.AddField("emailPost", eMail);
+        passwordForm.AddField("passwordPost", passWord);
+        WWW www = new WWW(PasswordURL, passwordForm);
+
+        yield return www;
+        Debug.Log(www.text);
+        if (www.text != "error")
+        {
+            showPwReset = false;
+            showNewPassword = false;
+            showForgotPw = false;
+            showLogin = true;
+        }
     }
 }
