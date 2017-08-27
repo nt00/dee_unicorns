@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dee_unicorns.CSharp", "dee_unicorns.CSharp.csproj", "{6FC81F65-B112-891C-7BEA-68823D3FB61B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dee_unicorns", "dee_unicorns.csproj", "{FC45B810-A611-BDF0-1EDD-F6A4974A3CFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6FC81F65-B112-891C-7BEA-68823D3FB61B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FC81F65-B112-891C-7BEA-68823D3FB61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FC81F65-B112-891C-7BEA-68823D3FB61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FC81F65-B112-891C-7BEA-68823D3FB61B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC45B810-A611-BDF0-1EDD-F6A4974A3CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC45B810-A611-BDF0-1EDD-F6A4974A3CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC45B810-A611-BDF0-1EDD-F6A4974A3CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC45B810-A611-BDF0-1EDD-F6A4974A3CFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

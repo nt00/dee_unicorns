@@ -10,7 +10,12 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(LoadItemData());
+        //StartCoroutine(LoadItemData());
+        for (int i = 0; i < items.Length - 1; i++)
+        {
+            inv.Add(ItemHandler.CreateAndSplitItem(items[i]));
+            //Debug.Log(inv[i].Name);
+        }
     }
 
     IEnumerator LoadItemData()
@@ -19,12 +24,6 @@ public class Inventory : MonoBehaviour
         yield return itemsURL;
         string itemData = itemsURL.text;
         items = itemData.Split(';');
-
-        for (int i = 0; i < items.Length - 1; i++)
-        {
-            inv.Add(ItemHandler.CreateAndSplitItem(items[i]));
-            Debug.Log(inv[i].Name);
-        }
     }
 
 }
